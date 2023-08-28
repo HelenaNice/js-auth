@@ -14,4 +14,5 @@ class FieldPassword {
     }
   }
 }
+
 window.fieldPassword = FieldPassword

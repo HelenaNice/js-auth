@@ -4,6 +4,6 @@ class BackButton {
   }
 }
 
-window.BackButton = BackButton
+window.backButton = BackButton // ***
 
 // підключена ф-ція на повернення до минулого вікна

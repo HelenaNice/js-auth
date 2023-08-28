@@ -14,17 +14,19 @@
 
     cursor: pointer;
     transition: border-color 0.3s;
+
     position: relative;
   }
 
   .field__value {
     font-size: 14px;
-    color: s.color('dark');
+    color: s.color(dark);
 
-    &--placehoder {
-      color: s.color('light');
+    &--placeholder {
+      color: s.color(light);
     }
   }
+
   .field__container {
     display: grid;
     position: relative;
@@ -72,6 +74,7 @@
       &:not(:last-of-type) {
         padding-bottom: s.space(4);
       }
+
       transition: color 0.3s;
 
       &[active] {

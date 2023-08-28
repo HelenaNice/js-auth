@@ -4,6 +4,12 @@ const express = require('express')
 const router = express.Router()
 
 const { User } = require('../class/user')
+// ***тестовій користувач
+User.create({
+  email: 'test@mail.com',
+  password: 123,
+  role: 1,
+})
 
 // ================================================================
 
@@ -47,6 +53,33 @@ router.get('/signup', function (req, res) {
     },
   })
   // ↑↑ сюди вводимо JSON дані
+})
+// ============POST=====
+router.post('/signup', function (req, res) {
+  const { email, password, role } = req.body
+
+  console.log(req.body)
+  // 1. Перевірка заповненності всіх полів
+  if (!email || !password || !role) {
+    return res.status(400).json({
+      message: 'Помилка. Відсутні обовїязкові поля',
+    })
+  }
+
+  // 1.1 перехоплення помилок при реєстраціі.Бізнес логіку
+  // лише через try/catch/ Інакше вимкне сервер
+
+  try {
+    User.create({ email, password, role })
+
+    return res.status(200).json({
+      message: 'Користувач успішно зареєстрований',
+    }) // 2.Все гуд
+  } catch (err) {
+    return res.status(200).json({
+      message: 'Помилка створення облікового запису',
+    })
+  }
 })
 
 // Підключаємо роутер до бек-енду
