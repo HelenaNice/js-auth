@@ -1,0 +1,52 @@
+{{! recovery-confirm.hbs}}
+
+<div class="page page--back">
+    <header>
+        {{> back-button}} <!-- Вставка кнопки "Назад" через partial back-button -->
+    </header>
+
+    <form class="page__section">
+        <h1 class="page__title">Відновлення паролю</h1>
+
+        <div class="form">
+            <div class="form__item">
+                {{!-- Поле для ввода кода --}}
+                {{> field
+                    action="recoveryConfirmForm.change"
+                    label="Код"
+                    type="number"
+                    name="code"
+                    placeholder="Ваш код"
+                }}
+                <span name="code" class="form__error">Помилка</span> <!-- Отображение ошибки для кода -->
+            </div>
+            <div class="form__item">
+                {{!-- Поле для ввода нового пароля --}}
+                {{> field-password
+                    action="recoveryConfirmForm.change"
+                    label="Новий пароль"
+                    name="password"
+                    placeholder="Введіть пароль"
+                }}
+                <span name="password" class="form__error">Помилка</span> <!-- Отображение ошибки для пароля -->
+            </div>
+            <div class="form__item">
+                {{!-- Поле для повторного ввода нового пароля --}}
+                {{> field-password
+                    action="recoveryConfirmForm.change"
+                    label="Новий пароль ще раз"
+                    name="passwordAgain"
+                    placeholder="Введіть пароль"
+                }}
+                <span name="passwordAgain" class="form__error">Помилка</span>
+                <!-- Отображение ошибки для повторного пароля -->
+            </div>
+        </div>
+
+        <button onclick="recoveryConfirmForm.submit()" class="button button--disabled" type="button">
+            Змінити пароль
+        </button>
+
+        <span class="alert alert--disabled">Внимание, ошибка!</span> <!-- Отображение алерта для ошибок -->
+    </form>
+</div>

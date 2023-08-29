@@ -1,51 +1,59 @@
 class User {
+  // Роли пользователей, представленные как статическое поле объекта
   static USER_ROLE = {
     USER: 1,
     ADMIN: 2,
     DEVELOPER: 3,
   }
 
+  // Приватное статическое поле, хранящее список объектов User
   static #list = []
 
   constructor({ email, password, role }) {
-    // 1.так небезпечно отримувати role в конструкторі, тому → 2
-    this.email = email
+    // Опасно принимать роль напрямую в конструкторе, потому что она может быть неверного формата
+    this.email = String(email).toLowerCase()
     this.password = password
-    this.role = User.#convertRole(role)
+    this.role = User.#convertRole(role) // Преобразование роли с проверкой
   }
-  // 2. приватн метод для отримання role з перевіркою чи це чісло
-  static #convertRole = (role) => {
-    role = Number(role)
 
+  // Приватный статический метод для преобразования роли с проверкой
+  static #convertRole = (role) => {
+    role = Number(role) // Преобразуем в число
+
+    // Если роль не является числом, устанавливаем USER по умолчанию
     if (isNaN(role)) {
       role = this.USER_ROLE.USER
     }
-    // 2-1. чи це чісло присутнє у класі USER_ROLE 1,2,3. Якщо є =отримаємо значеня, або з/з=1
+
+    // Проверяем, является ли значение роли допустимым (1, 2, 3) или устанавливаем USER по умолчанию
     role = Object.values(this.USER_ROLE).includes(role)
       ? role
       : this.USER_ROLE.USER
 
     return role
   }
-  // 3. створити запис та додати в список
-  static create(data) {
-    const user = new User(data) // вивід в консоль доданого користувача
-    console.log(user)
 
-    this.#list.push(user)
-    console.log(this.#list)
+  // Статический метод для создания нового пользователя и добавления его в список
+  static create(data) {
+    const user = new User(data) // Создаем новый объект пользователя
+    console.log(user) // Выводим в консоль информацию о добавленном пользователе
+
+    this.#list.push(user) // Добавляем пользователя в список
+    console.log(this.#list) // Выводим в консоль обновленный список пользователей
   }
-  // 4. знайти користувача по емайл,або =0
+
+  // Статический метод для поиска пользователя по электронной почте, возвращает null, если не найден
   static getByEmail(email) {
     return (
       this.#list.find(
         (user) =>
-          user.email === String(email).toLowerCase(), // ***
+          user.email === String(email).toLowerCase(), // Приводим к нижнему регистру для сравнения
       ) || null
     )
   }
 }
 
+// Экспорт класса User для использования в других файлах
 module.exports = {
   User,
 }
