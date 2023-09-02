@@ -8,12 +8,15 @@ class User {
 
   // Приватное статическое поле, хранящее список объектов User
   static #list = []
+  static #count = 1
 
   constructor({ email, password, role }) {
+    this.id = User.#count++
     // Опасно принимать роль напрямую в конструкторе, потому что она может быть неверного формата
     this.email = String(email).toLowerCase()
-    this.password = password
+    this.password = String(password)
     this.role = User.#convertRole(role) // Преобразование роли с проверкой
+    this.isConfirm = false
   }
 
   // Приватный статический метод для преобразования роли с проверкой
@@ -40,6 +43,7 @@ class User {
 
     this.#list.push(user) // Добавляем пользователя в список
     console.log(this.#list) // Выводим в консоль обновленный список пользователей
+    return user
   }
 
   // Статический метод для поиска пользователя по электронной почте, возвращает null, если не найден

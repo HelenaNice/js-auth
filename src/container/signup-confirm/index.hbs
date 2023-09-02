@@ -1,0 +1,35 @@
+{{! signup-confirm.hbs}}
+
+<div class="page page--back">
+    <header>
+        {{> back-button}} <!-- Вставка кнопки "Назад" через partial back-button -->
+    </header>
+
+    <form class="page__section">
+        <h1 class="page__title">Підтвердження пошти</h1>
+        <p class="page__subtitle">
+            На вашу пошту надіслано код для підтвердження облікового запису. Введіть його сюди
+        </p>
+        <div class="form">
+            <div class="form__item">
+                {{!-- Поле для ввода кода --}}
+                {{> field
+                    action="signupConfirmForm.change"
+                    label="Код"
+                    type="number"
+                    name="code"
+                    placeholder="Ваш код"
+                }}
+                <span name="code" class="form__error">Помилка</span> <!-- Отображение ошибки для кода -->
+            </div>
+        </div>
+
+        <button onclick="signupConfirmForm.submit()" class="button button--disabled" type="button">Відправити</button>
+        <span class="alert alert--disabled">Підтвердити</span> <!-- Отображение алерта для ошибок -->
+
+        <span class="link__prefix">Загубили код?
+            <a href="/signup-confirm" class="link" id="renew">Відправити ще раз</a>
+
+        </span>
+    </form>
+</div>

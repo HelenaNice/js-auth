@@ -1,58 +1,33 @@
+// signup-confirm.js
 // Импорт необходимых зависимостей из другого модуля
+import { Form } from '../../script/form'
 import {
-  Form,
-  REG_EXP_EMAIL,
-  REG_EXP_PASSWORD,
-} from '../../script/form'
-import { saveSession } from '../../script/session'
+  saveSession,
+  getTokenSession,
+  getSession,
+} from '../../script/session'
 
-// Определение класса RecoveryConfirmForm, который наследует функциональность класса Form
-class RecoveryConfirmForm extends Form {
+// Определение класса SignupConfirmForm, который наследует функциональность класса Form
+class SignupConfirmForm extends Form {
   // Константы для полей формы
   FIELD_NAME = {
     CODE: 'code',
-    PASSWORD: 'password',
-    PASSWORD_AGAIN: 'passwordAgain',
   }
 
   // Константы для сообщений об ошибках
   FIELD_ERROR = {
     IS_EMPTY: 'Введіть значення в поле',
     IS_BIG: 'Дуже довге значення, приберіть зайве',
-    PASSWORD:
-      'Пароль повинен складатися з не менше ніж 8 символів, включаючи хоча б одну цифру, малу та велику літеру',
-    PASSWORD_AGAIN:
-      'Ваш другий пароль не збігається з першим',
   }
 
   // Метод валидации полей
-  validate = (name, value) => {
+  validate = (value) => {
     // Проверка на пустое значение
     if (String(value).length < 1) {
       return this.FIELD_ERROR.IS_EMPTY
     }
-
-    // Проверка на слишком большое значение
-    if (String(value).length > 20) {
-      return this.FIELD_ERROR.IS_BIG
-    }
-
-    // Проверка для поля пароля
-    if (name === this.FIELD_NAME.PASSWORD) {
-      if (!REG_EXP_PASSWORD.test(String(value))) {
-        return this.FIELD_ERROR.PASSWORD
-      }
-    }
-
-    // Проверка для повторного ввода пароля
-    if (name === this.FIELD_NAME.PASSWORD_AGAIN) {
-      if (
-        String(value) !==
-        this.value[this.FIELD_NAME.PASSWORD]
-      ) {
-        return this.FIELD_ERROR.PASSWORD_AGAIN
-      }
-    }
+    // Добавьте другие проверки, если необходимо
+    return null // Вернуть null, если поле валидно
   }
 
   // Метод для обработки отправки формы
@@ -66,7 +41,7 @@ class RecoveryConfirmForm extends Form {
 
       try {
         // Отправка данных формы на сервер
-        const res = await fetch('/recovery-confirm', {
+        const res = await fetch('/signup-confirm', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -96,11 +71,34 @@ class RecoveryConfirmForm extends Form {
       [this.FIELD_NAME.CODE]: Number(
         this.value[this.FIELD_NAME.CODE],
       ),
-      [this.FIELD_NAME.PASSWORD]:
-        this.value[this.FIELD_NAME.PASSWORD],
+      // Не забудьте указать токен, если он необходим
+      token: getTokenSession(),
     })
   }
 }
 
-// Создание экземпляра класса RecoveryConfirmForm и привязка к глобальному объекту
-window.recoveryConfirmForm = new RecoveryConfirmForm()
+document.addEventListener('DOMContentLoaded', () => {
+  // Проверяем, существует ли глобальная переменная window.session.
+  try {
+    if (window.session) {
+      if (window.session.user.isConfirm) {
+        location.assign('/')
+      }
+    } else {
+      location.assign('/')
+    }
+  } catch (e) {}
+
+  document
+    .querySelector('#renew')
+    .addEventListener('click', (e) => {
+      e.preventDefault()
+      const session = getSession()
+
+      location.assign(
+        `/signup-confirm?renew=true&email=${session.user.email}`,
+      )
+    })
+})
+
+window.signupConfirmForm = new SignupConfirmForm()
