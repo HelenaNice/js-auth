@@ -55,6 +55,15 @@ class User {
       ) || null
     )
   }
+
+  static getById(id) {
+    return (
+      this.#list.find((user) => user.id === Number(id)) ||
+      null
+    )
+  }
+
+  static getList = () => this.#list
 }
 
 // Экспорт класса User для использования в других файлах

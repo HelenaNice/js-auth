@@ -8,8 +8,25 @@ const { Confirm } = require('../class/confirm')
 const { Session } = require('../class/session')
 // ***тестовій користувач
 User.create({
-  email: 'test@mail.com',
+  email: 'user1@mail.com',
+  password: '123456Qq',
+  role: 1,
+})
+
+User.create({
+  email: 'admin@mail.com',
   password: '123456Qw',
+  role: 2,
+})
+
+User.create({
+  email: 'developer@mail.com',
+  password: '123456Ww',
+  role: 3,
+})
+User.create({
+  email: 'user4@mail.com',
+  password: '123457Ww',
   role: 1,
 })
 

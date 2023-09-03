@@ -26,7 +26,7 @@ router.get('/', function (req, res) {
 
 // 2.***************
 //  ↙️ тут вводимо шлях (PATH) до сторінки
-router.get('/', function (req, res) {
+router.get('/home', function (req, res) {
   // res.render генерує нам HTML сторінку
 
   // ↙️ cюди вводимо назву файлу з сontainer
@@ -37,7 +37,7 @@ router.get('/', function (req, res) {
     component: [],
 
     // вказуємо назву сторінки
-    title: 'Home page',
+    title: 'Logout page',
     // ... сюди можна далі продовжувати додавати потрібні технічні дані, які будуть використовуватися в layout
 
     // вказуємо дані,
@@ -49,10 +49,11 @@ router.get('/', function (req, res) {
 // Підключіть файли роутів
 const auth = require('./auth')
 // Підключіть інші файли роутів, якщо є
+const user = require('./user')
 
 // Об'єднайте файли роутів за потреби
 router.use('/', auth)
 // Використовуйте інші файли роутів, якщо є
-
+router.use('/', user)
 // Експортуємо глобальний роутер
 module.exports = router
